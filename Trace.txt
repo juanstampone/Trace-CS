@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trace_Metamodel:ExecutionTrace
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:trace_Metamodel="http://www.example.org/trace_Metamodel"
+    xsi:schemaLocation="http://www.example.org/trace_Metamodel trace_Metamodel.ecore">
+<statment xsi:type="trace_Metamodel:MethodCall" target="@Object.0" caller="@Object.1" actualParameters="//@Object.2" name="main">
+<subtrace name="main_trace">
+<statement xsi:type="trace_Metamodel:FormalParameter" allocatedObject="//@Object.3" name="args"/>
+<statment xsi:type="trace_Metamodel:MethodCall" target="@Object.3" caller="@Object.4" actualParameters="//@Object.4" name="addLoan">
+<subtrace name="addLoan_trace">
+<statement xsi:type="trace_Metamodel:FormalParameter" allocatedObject="//@Object.5" name="loan"/>
+<statement xsi:type="trace_Metamodel:Return" returnedObject="//null"/>
+</subtrace>
+</statement>
+<statment xsi:type="trace_Metamodel:MethodCall" target="@Object.5" caller="@Object.6" actualParameters="//@Object.6 //@Object.6" name="borrowDocument">
+<subtrace name="borrowDocument_trace">
+<statement xsi:type="trace_Metamodel:FormalParameter" allocatedObject="//@Object.7" name="user"/>
+<statement xsi:type="trace_Metamodel:FormalParameter" allocatedObject="//@Object.7" name="doc"/>
+<statment xsi:type="trace_Metamodel:MethodCall" target="@Object.7" caller="@Object.7" actualParameters="//@Object.7 //@Object.7" name="verifyData">
+<subtrace name="verifyData_trace">
+<statement xsi:type="trace_Metamodel:FormalParameter" allocatedObject="//@Object.7" name="u"/>
+<statement xsi:type="trace_Metamodel:FormalParameter" allocatedObject="//@Object.7" name="d"/>
+<statement xsi:type="trace_Metamodel:Return" returnedObject="//@Object.7"/>
+</subtrace>
+</statement>
+<statement xsi:type="trace_Metamodel:Return" returnedObject="//@Object.8"/>
+</subtrace>
+</statement>
+<statement xsi:type="trace_Metamodel:Return" returnedObject="//null"/>
+</subtrace>
+</statement>
+<objects id="-1"/>
+<objects id="Library_static"/>
+<objects id="[Ljava.lang.String;@14a47c7"/>
+<objects id="example.User@1c1b556"/>
+<objects id="example.Loan@7e5365"/>
+<objects id="example.Library@fcf7ab"/>
+<objects id="example.Document@1e23121"/>
+<objects id="false"/>
+<objects id="example.Loan@c2f8d"/>
+</trace_Metamodel:ExecutionTrace>
