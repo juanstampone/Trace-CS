@@ -2,6 +2,7 @@ package com.cs.tesis.trace.aspect;
 
 import java.util.LinkedList;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.After;
@@ -26,17 +27,28 @@ public class TraceAspect {
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
 		System.out.println("a");
 		LinkedList log = new LinkedList();
-
+		
 		String thisID = "";
 		if (pjp.getThis() != null) {
-			thisID = pjp.getThis().toString();
+			thisID =  pjp.getThis().toString();
+			System.out.println("thiiis " + thisID);
 		} else {
-			thisID = getStaticClassName(pjp.getSourceLocation().toString());
+			thisID = getStaticClassName(pjp.getStaticPart().getSourceLocation().toString());
+			System.out.println("this Idd static" + thisID);
 		}
 
 		String targetId = "-1";
-		if (pjp.getTarget() != null)
-			targetId = pjp.getTarget().toString();
+		Object o ;
+		if (pjp.getTarget() != null){
+			targetId = pjp.getTarget().toString();			
+		} else {
+			System.out.println("entro 2");
+			
+		}
+//		if (pjp.getTarget() != null)
+			
+	//		targetId = pjp.getTarget().;
+
 
 		log.add("<statment xsi:type=\"trace_Metamodel:MethodCall\" target=\"" + ObjectId.getObjectId().add(targetId)
 				+ "\" caller=\"" + ObjectId.getObjectId().add(thisID) + "\" actualParameters=\""
@@ -153,5 +165,10 @@ public class TraceAspect {
 		}
 		return log;
 	}
+	
+	  @Override
+	  public String toString() {
+	    return "Robot nº ";
+	  }
 
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="335.0" prefWidth="302.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs.tesis.trace.MainUIController">
+	<children>
+		<Button fx:id="ButtonOK" layoutX="202.0" layoutY="23.0" mnemonicParsing="false" onAction="#onHandler" text="Button" />
+      <TextArea fx:id="TextArea" layoutX="42.0" layoutY="77.0" prefHeight="200.0" prefWidth="217.0" />
+	</children>
+</AnchorPane>
