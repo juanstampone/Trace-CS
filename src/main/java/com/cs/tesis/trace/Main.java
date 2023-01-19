@@ -14,13 +14,15 @@ import java.util.jar.JarInputStream;
 
 import org.aspectj.weaver.loadtime.WeavingURLClassLoader;
 
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 
@@ -31,13 +33,21 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-	        URL layout = Main.class.getResource("/MainUI.fxml");
-	        Parent root = FXMLLoader.load(layout);
-	        Scene scene = new Scene(root,400,400);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainWindow.fxml"));
+			MainUIController controller = new MainUIController(primaryStage);
+			loader.setController(controller);
+			Pane mainPane = (Pane) loader.load();
+			Scene scene = new Scene(mainPane);
+			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			primaryStage.setTitle("Agente de Trazas");
 			primaryStage.setScene(scene);
+			primaryStage.initStyle(StageStyle.UNDECORATED);
+	        File file = new File("/images/ToolIcon.png");
+	        Image ToolIcon = new Image(file.toURI().toString());
+	        primaryStage.getIcons().add(ToolIcon);
 			primaryStage.show();
+			mainPane.requestFocus();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

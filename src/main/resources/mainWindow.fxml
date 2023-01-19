@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="topWindow" prefHeight="70.0" prefWidth="1024.0" style="-fx-background-color: #c5cae9;">
+               <children>
+                  <Label alignment="CENTER" prefHeight="16.0" prefWidth="1024.0" style="-fx-background-color: #9499b7;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="1.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="btnClose" fitHeight="32.0" fitWidth="32.0" layoutX="976.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/images/CloseIcon.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <ImageView fx:id="btnMinimize" fitHeight="32.0" fitWidth="32.0" layoutX="935.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/images/MinimizeIcon.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <Text layoutX="32.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TRACE AGENT" wrappingWidth="650.0">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="698.0" prefWidth="1024.0" style="-fx-background-color: #e8eaf6;">
+               <children>
+                  <Text layoutX="24.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccione el archivo JAR a tracear" wrappingWidth="277.0708312988281">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="fileLabel" alignment="CENTER" layoutX="354.0" layoutY="55.0" prefHeight="32.0" prefWidth="642.0" style="-fx-background-color: #c5cae9;" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="btnUpload" fitHeight="32.0" fitWidth="32.0" layoutX="312.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/images/upload.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <Label fx:id="errorLabel" alignment="CENTER" layoutY="662.0" prefHeight="36.0" prefWidth="1024.0" style="-fx-background-color: #e53935;" text="Seleccione su dispositivo." textAlignment="CENTER" textFill="WHITE" visible="false">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="btnEjecutar" alignment="CENTER" layoutX="820.0" layoutY="240.0" prefHeight="32.0" prefWidth="173.0" style="-fx-background-color: #c5cae9;" text="Ejecutar" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <TextArea fx:id="txtOutput" layoutX="25.0" layoutY="295.0" prefHeight="358.0" prefWidth="971.0" />
+                  <CheckBox layoutX="45.0" layoutY="127.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="161.0" text="Tiempo Ejecución">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox layoutX="45.0" layoutY="169.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="308.0" text="Métodos con argumentos">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox layoutX="45.0" layoutY="212.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="308.0" text="Métodos">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </CheckBox>
+                  <ImageView fx:id="btnClearOutPut" fitHeight="32.0" fitWidth="32.0" layoutX="773.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/images/delete.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
