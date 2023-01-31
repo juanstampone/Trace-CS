@@ -8,11 +8,13 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
 import org.aspectj.weaver.loadtime.WeavingURLClassLoader;
+
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -30,10 +32,10 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
 	
-	@Override
+	/*@Override
 	public void start(Stage primaryStage) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainWindow.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
 			MainUIController controller = new MainUIController(primaryStage);
 			loader.setController(controller);
 			Pane mainPane = (Pane) loader.load();
@@ -51,7 +53,25 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
+	
+	
+	@Override
+	public void start(Stage stage) throws IOException {
+	
+    Locale.setDefault(Locale.US);
+    String title = String.format("%s v%s", "hola", "hola");
+    URL layout = Main.class.getResource("/layout.fxml");
+    Image icon = new Image(Main.class.getResourceAsStream("/icon.png"));
+    Parent root = FXMLLoader.load(layout);
+    Scene scene = new Scene(root, 1280, 720);
+    stage.setScene(scene);
+    stage.setTitle(title);
+    stage.getIcons().add(icon);
+    stage.setIconified(false);
+    stage.show();
+}
+	
 	
 	public static void main(String[] args) {
 		launch(args);

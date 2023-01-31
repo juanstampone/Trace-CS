@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" minHeight="300" minWidth="300" styleClass="layout" stylesheets="/css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs.tesis.trace.Controller">
+
+    <MenuBar fx:id="menu">
+        <Menu text="File">
+            <MenuItem onAction="#open" text="Open" />
+            <SeparatorMenuItem />
+            <MenuItem fx:id="menuSave" disable="true" onAction="#save" text="Save" />         	
+            <SeparatorMenuItem />
+            <MenuItem onAction="#exit" text="Exit" />
+        </Menu>
+        <Menu text="Help">
+            <MenuItem onAction="#about" text="About" />
+        </Menu>
+    </MenuBar>
+
+    <StackPane VBox.vgrow="ALWAYS">
+        <Label fx:id="placeholder">Please open the JAR file using "File" -> "Open"</Label>
+
+        <ProgressIndicator fx:id="progress" maxHeight="100" maxWidth="100" visible="false" />
+
+        <VBox fx:id="loader" spacing="15" visible="false">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <HBox alignment="CENTER" spacing="10">
+                <Label>Main class:</Label>
+                <Label fx:id="mainClass" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button disable="true">Change</Button>
+                <Button defaultButton="true" onAction="#run">Run with Profiler</Button>
+            </HBox>
+            <Separator />
+            <HBox alignment="CENTER" spacing="10">
+                <Label>Arguments:</Label>
+                <TextField fx:id="args" HBox.hgrow="ALWAYS" />
+            </HBox>
+            <Separator />
+            <Label>Please select packages and classes you would like to analyze:</Label>
+            <TreeView fx:id="packageTree" VBox.vgrow="ALWAYS" />
+        </VBox>
+
+        <VBox fx:id="profiler" spacing="15" visible="false">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <Label>Profiler output:</Label>
+            <TreeView fx:id="methodTree" VBox.vgrow="ALWAYS" />
+        </VBox>
+
+    </StackPane>
+</VBox>

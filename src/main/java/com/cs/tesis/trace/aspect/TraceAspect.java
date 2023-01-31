@@ -25,16 +25,14 @@ public class TraceAspect {
 
 	@Around("traceMetodos()")
 	public Object around(ProceedingJoinPoint pjp) throws Throwable {
-		System.out.println("a");
+		
 		LinkedList log = new LinkedList();
 		
 		String thisID = "";
 		if (pjp.getThis() != null) {
 			thisID =  pjp.getThis().toString();
-			System.out.println("thiiis " + thisID);
 		} else {
 			thisID = getStaticClassName(pjp.getStaticPart().getSourceLocation().toString());
-			System.out.println("this Idd static" + thisID);
 		}
 
 		String targetId = "-1";
@@ -45,10 +43,6 @@ public class TraceAspect {
 			System.out.println("entro 2");
 			
 		}
-//		if (pjp.getTarget() != null)
-			
-	//		targetId = pjp.getTarget().;
-
 
 		log.add("<statment xsi:type=\"trace_Metamodel:MethodCall\" target=\"" + ObjectId.getObjectId().add(targetId)
 				+ "\" caller=\"" + ObjectId.getObjectId().add(thisID) + "\" actualParameters=\""
