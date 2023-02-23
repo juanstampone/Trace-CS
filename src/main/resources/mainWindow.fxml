@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -47,7 +47,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="698.0" prefWidth="1024.0" style="-fx-background-color: #e8eaf6;">
                <children>
-                  <Text layoutX="24.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccione el archivo JAR a tracear" wrappingWidth="277.0708312988281">
+                  <Text layoutX="25.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccione el archivo JAR a analizar" wrappingWidth="286.6708068847656">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -70,7 +70,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="btnEjecutar" alignment="CENTER" layoutX="820.0" layoutY="240.0" prefHeight="32.0" prefWidth="173.0" style="-fx-background-color: #c5cae9;" text="Ejecutar" textAlignment="CENTER">
+                  <Label fx:id="btnExportar" alignment="CENTER" layoutX="820.0" layoutY="122.0" prefHeight="32.0" prefWidth="173.0" style="-fx-background-color: #c5cae9;" text="Exportar" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -78,23 +78,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <TextArea fx:id="txtOutput" layoutX="25.0" layoutY="295.0" prefHeight="358.0" prefWidth="971.0" />
-                  <CheckBox layoutX="45.0" layoutY="127.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="161.0" text="Tiempo Ejecución">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox layoutX="45.0" layoutY="169.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="308.0" text="Métodos con argumentos">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox layoutX="45.0" layoutY="212.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="308.0" text="Métodos">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </CheckBox>
-                  <ImageView fx:id="btnClearOutPut" fitHeight="32.0" fitWidth="32.0" layoutX="773.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="btnClearOutPut" fitHeight="32.0" fitWidth="32.0" layoutX="581.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@/images/delete.png" />
                      </image>
@@ -102,6 +86,27 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
+                  <Separator layoutX="25.0" layoutY="91.0" prefHeight="26.0" prefWidth="971.0" />
+                  <Label layoutX="25.0" layoutY="124.0" prefHeight="27.0" prefWidth="91.0" text="Main class:">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblMainClass" layoutX="116.0" layoutY="125.0" prefHeight="27.0" prefWidth="453.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Separator layoutX="25.0" layoutY="159.0" prefHeight="26.0" prefWidth="971.0" />
+                  <TreeView fx:id="txtOutput" layoutX="25.0" layoutY="191.0" prefHeight="462.0" prefWidth="971.0" />
+                  <Label fx:id="btnEjecutar" alignment="CENTER" layoutX="634.0" layoutY="122.0" prefHeight="32.0" prefWidth="173.0" style="-fx-background-color: #c5cae9;" text="Analizar" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

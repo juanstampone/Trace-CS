@@ -4,8 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,11 +25,16 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 
 import org.aspectj.weaver.loadtime.WeavingURLClassLoader;
+
+import com.cs.tesis.services.JarService;
+import com.cs.tesis.services.ProfilerService;
+import com.cs.tesis.trace.aspect.Logger;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -32,129 +42,82 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-public class MainUIController extends Application implements Initializable {
+public class MainUIController implements Initializable {
 
-
+    //private static final Image packageIcon = loadImage("/icons/package.png");
+    //private static final Image classIcon = loadImage("/icons/class.png");
+    private static final Image progressIcon = loadImage("/icons/progress.png");
+    private static final Image doneIcon = loadImage("/icons/done.png");
+	
     @FXML private ImageView btnClose;
     @FXML private ImageView btnMinimize;
     @FXML private ImageView btnUpload;
     @FXML private ImageView btnClearOutPut;
+    @FXML private Label lblMainClass;
     @FXML private AnchorPane topWindow;
     @FXML private Label errorLabel;
     @FXML private Label fileLabel;
     @FXML private Label btnEjecutar;
-    @FXML private TextArea txtOutput;
-    
-    
-    //private Analityc analityc = new Analityc();
-    private ObservableList<String> listaDispositivos = FXCollections.observableArrayList(); 
+    @FXML private Label btnExportar;
+    @FXML private TreeView<String> txtOutput;
       
-    private FileChooser fileChooser = new FileChooser();
-    //private Desktop desktop = Desktop.getDesktop();
+    private JarService loaderService = new JarService();
+    private ProfilerService profilerService = new ProfilerService();
     
     private Stage pStage; // Stage de mainWindow
     
     private double xOffset = 0; // xOffset e yOffset permiten almacenar la posicion de la ventana al ser desplazada por el usuario
     private double yOffset = 0; 
-    private boolean styled = false; // Permite verificar si ya fue removido el marco de la ventana. 
-    private Stage sStage = new Stage(); // Stage de la segunda ventana: 2. Ingrese el valor de la inversion deseada
-    
-    //private JsoupRun imageSmartPhone = new JsoupRun();
-    //private Task getImageWorker; 
-	//private JsoupRun testConexion = new JsoupRun();
     
     public MainUIController(Stage primaryStage) {
-    	pStage = primaryStage; 
+    	pStage = primaryStage;   	
 	}
     
-	@Override
-	public void start(Stage secondStage) throws Exception {
-		
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("investmentWindow.fxml"));
-		//investmentWindowController c = new investmentWindowController(pStage, secondStage, analityc); 
-		//loader.setController(c);
-		Pane mainPane = (Pane) loader.load();
-		Scene scene = new Scene(mainPane);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-		secondStage.setScene(scene);
-		secondStage.setX(xOffset);
-		secondStage.setY(yOffset);
-		if (!styled) {
-			secondStage.initStyle(StageStyle.UNDECORATED);
-			styled = true;
-		}
-		secondStage.setWidth(pStage.getWidth());
-		secondStage.setHeight(pStage.getHeight());
-		secondStage.show();
-		mainPane.requestFocus();
-	}
-	
-	// SIGUIENTE VENTANA investmentWindow mediante btnNext
-	public void nextInvestmentWindow() {
-		System.out.println("Metodo por afuera");		
-	}
-	
-	private void executeJar() {
+    private static Image loadImage(String url) {
+        return new Image(JarService.class.getResourceAsStream(url));
+    }
+    
+    public void startMethod(int level, String statement) {
+        TreeItem<String> root = txtOutput.getRoot();
+        while (level > 0) {
+            List<TreeItem<String>> children = root.getChildren();
+            root = children.get(children.size() - 1);
+            level--;
+        }
+        TreeItem<String> child = new TreeItem<>(statement, new ImageView(progressIcon));
+        child.setExpanded(true);
+        root.getChildren().add(child);
+    }
 
-		StringBuffer sb = new StringBuffer();
-		try {
-			
-			if (fileLabel.getText() != null) {
-					
-				try {
-					File file = new File(fileLabel.getText()) ;
-					String [] args = new String[1];
-			        JarInputStream jarInputStream = new JarInputStream(new FileInputStream(file));
-			
-			        Attributes mainAttributes = jarInputStream.getManifest().getMainAttributes();
-			        String mainClass = mainAttributes.getValue("Main-Class");
-			
-			//        Trie<String> packages = new Trie<>("All packages");
-			
-			      /*  JarEntry jarEntry;
-			        while ((jarEntry = jarInputStream.getNextJarEntry()) != null) {
-			            String className = jarEntry.getName();
-			            if (className.endsWith(".class")) {
-			                List<String> path = Arrays.asList(jarEntry.getName().split("/"));
-			               // packages.add(path);
-			            }
-			        }*/
-			        
-					URL appUrl = file.toURI().toURL();
-					
-			        URL aspectsUrl = Main.class.getProtectionDomain().getCodeSource().getLocation();
-			        URL[] classURLs = new URL[]{appUrl, aspectsUrl};
-			        URL[] aspectURLs = new URL[]{aspectsUrl};
-			        
-			        ClassLoader defaultClassLoader = Thread.currentThread().getContextClassLoader();
-			        ClassLoader weavingClassLoader = new WeavingURLClassLoader(classURLs, aspectURLs, defaultClassLoader);
-			        Thread.currentThread().setContextClassLoader(weavingClassLoader);
-			
-			        Class<?> app = weavingClassLoader.loadClass(mainClass);
-			        Method run = app.getMethod("main", String[].class);
-			        run.invoke(null, (Object) args);
-			        
-			        
-			        Thread.currentThread().setContextClassLoader(defaultClassLoader);
-				}catch (Exception e) {
-					e.printStackTrace();
-						System.out.println(e.getStackTrace());
-					}
-			}
-		}
-		catch(Exception ex) {
-			
-		}
-		
-		txtOutput.setEditable(false);
-		txtOutput.setText(sb.toString());
-		
+    public void endMethod(int level, String statement) {
+        TreeItem<String> root = txtOutput.getRoot();
+        while (level > 0) {
+            List<TreeItem<String>> children = root.getChildren();
+            root = children.get(children.size() - 1);
+            level--;
+        }
+        TreeItem<String> child = new TreeItem<>(statement, new ImageView(doneIcon));
+        child.setExpanded(true);
+        root.getChildren().add(child);
     }
     
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
-        	    	
+    	Logger.getLoggingClient().attachController(this);
+    	lblMainClass.textProperty().bind(profilerService.mainClassProperty());
+    	fileLabel.textProperty().bind(loaderService.filePathProperty());
+        profilerService.fileProperty().bind(loaderService.fileProperty());
+        TreeItem<String> methodRoot = new TreeItem<>("Method call tree:");
+        methodRoot.setExpanded(true);
+        txtOutput.setRoot(methodRoot);
+        
+        loaderService.setOnSucceeded(event -> {
+            JarService.Result result = loaderService.getValue();
+            String mainClass = result.getMainClass();
+            profilerService.setMainClass(mainClass);
+        });
+        
     	// MOVIMIENTO DE VENTANA DESDE TOP WINDOWS
 		topWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -177,6 +140,8 @@ public class MainUIController extends Application implements Initializable {
 
 		     @Override
 		     public void handle(MouseEvent event) {
+		    	 loaderService.cancel();
+		    	 profilerService.cancel();
 		         pStage.close();		         
 		         event.consume();
 		     }
@@ -197,10 +162,17 @@ public class MainUIController extends Application implements Initializable {
 		     @Override
 		     public void handle(MouseEvent event) {
 		    	 
-		    	 File file = fileChooser.showOpenDialog(pStage);
-                 if (file != null) {
-                	 fileLabel.setText(file.toString());                 
-                 }               
+		    	 FileChooser fileChooser = new FileChooser();
+		         fileChooser.setTitle("Open JAR File");
+		         fileChooser.getExtensionFilters().addAll(
+		                 new ExtensionFilter("JAR Files", "*.jar"),
+		                 new ExtensionFilter("All Files", "*.*")
+		         );
+		         File selectedFile = fileChooser.showOpenDialog(pStage);
+		         if (selectedFile != null) {
+		             loaderService.setFile(selectedFile);
+		             loaderService.start();
+		         }         
 		     }
 		});
 		
@@ -209,11 +181,28 @@ public class MainUIController extends Application implements Initializable {
 		     @Override
 		     public void handle(MouseEvent event) {
 		    	 
-		    	 if (!fileLabel.getText().isEmpty()) {
-		    		 executeJar();
-		    	 }
-		    	 
+		    	 if (loaderService.getFile() != null) {
+			         Logger.getLoggingClient().pushLevel(Logger.MethodHeader);
+			         
+		    		 profilerService.start();
+		    	 }		    	 
                              
+		     }
+		});
+		
+		btnExportar.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+		     @Override
+		     public void handle(MouseEvent event) {
+		    	 
+		    	  FileChooser fileChooser = new FileChooser();
+		          fileChooser.setTitle("Save data");
+		          fileChooser.setInitialFileName("Report.txt");
+		          File selectedFile = fileChooser.showSaveDialog(pStage);
+		          if (selectedFile != null) {
+		              Logger.getLoggingClient().exportLogger(selectedFile);
+		          }    	 
+                            
 		     }
 		});
 		
@@ -222,8 +211,17 @@ public class MainUIController extends Application implements Initializable {
 		     @Override
 		     public void handle(MouseEvent event) {
 		    	 
-		    	 txtOutput.setText("");   	 
-                            
+		    	 loaderService.reset();
+		    	 profilerService.reset();
+		    	 loaderService.setFile(null);
+		    	 profilerService.setFile(null);
+		    	 profilerService.setMainClass(null);
+		    	 Logger.getLoggingClient().cleanLogger();
+		    	 txtOutput = new TreeView<String>();
+		    	 
+		    	 TreeItem<String> methodRoot = new TreeItem<>("Method call tree:");
+		         methodRoot.setExpanded(true);
+		         txtOutput.setRoot(methodRoot);          
 		     }
 		});
 		

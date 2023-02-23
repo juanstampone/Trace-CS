@@ -23,7 +23,6 @@ public class ObjectId {
 	public String add(String valor) {	
 		HashMap<Integer, String> map = getObjects();
 		if (!map.containsValue(valor)){
-			System.out.println("entro");
 			map.put(ID, valor);
 			ID++;
 			return "@Object."+ (ID-1);
