@@ -3,12 +3,11 @@ package com.cs.tesis.trace;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.CheckBoxTreeItem;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +47,8 @@ public class MainUIController implements Initializable {
     //private static final Image classIcon = loadImage("/icons/class.png");
     private static final Image progressIcon = loadImage("/icons/progress.png");
     private static final Image doneIcon = loadImage("/icons/done.png");
+    
+    private static Alert a = new Alert(AlertType.NONE);
 	
     @FXML private ImageView btnClose;
     @FXML private ImageView btnMinimize;
@@ -107,15 +108,33 @@ public class MainUIController implements Initializable {
     	Logger.getLoggingClient().attachController(this);
     	lblMainClass.textProperty().bind(profilerService.mainClassProperty());
     	fileLabel.textProperty().bind(loaderService.filePathProperty());
-        profilerService.fileProperty().bind(loaderService.fileProperty());
         TreeItem<String> methodRoot = new TreeItem<>("Method call tree:");
         methodRoot.setExpanded(true);
         txtOutput.setRoot(methodRoot);
         
         loaderService.setOnSucceeded(event -> {
             JarService.Result result = loaderService.getValue();
-            String mainClass = result.getMainClass();
-            profilerService.setMainClass(mainClass);
+            profilerService.setMainClass(result.getMainClass());
+            profilerService.setFile(loaderService.getFile());
+            
+            loaderService.reset();
+            
+            MainUIController.a.setAlertType(AlertType.CONFIRMATION);
+            MainUIController.a.setTitle("ALERT");
+            MainUIController.a.setHeaderText("Message");
+            MainUIController.a.setContentText("El archivo se importó correctamente.");
+            a.show();
+        });
+        
+        profilerService.setOnSucceeded(event -> {
+        	
+        	profilerService.reset();
+        	
+        	MainUIController.a.setAlertType(AlertType.CONFIRMATION);
+        	MainUIController.a.setTitle("ALERT");
+        	MainUIController.a.setHeaderText("Message");
+        	MainUIController.a.setContentText("El análisis ha finalizado de forma satifactoria.");
+            a.show();
         });
         
     	// MOVIMIENTO DE VENTANA DESDE TOP WINDOWS
@@ -182,8 +201,7 @@ public class MainUIController implements Initializable {
 		     public void handle(MouseEvent event) {
 		    	 
 		    	 if (loaderService.getFile() != null) {
-			         Logger.getLoggingClient().pushLevel(Logger.MethodHeader);
-			         
+			         Logger.getLoggingClient().pushLevel(Logger.MethodHeader);		         
 		    		 profilerService.start();
 		    	 }		    	 
                              
@@ -195,13 +213,19 @@ public class MainUIController implements Initializable {
 		     @Override
 		     public void handle(MouseEvent event) {
 		    	 
-		    	  FileChooser fileChooser = new FileChooser();
-		          fileChooser.setTitle("Save data");
-		          fileChooser.setInitialFileName("Report.txt");
-		          File selectedFile = fileChooser.showSaveDialog(pStage);
-		          if (selectedFile != null) {
-		              Logger.getLoggingClient().exportLogger(selectedFile);
-		          }    	 
+		    	 FileChooser fileChooser = new FileChooser();
+		    	 fileChooser.setTitle("Save data");
+		    	 fileChooser.setInitialFileName("Report.txt");
+		    	 File selectedFile = fileChooser.showSaveDialog(pStage);
+		    	 if (selectedFile != null) {
+		    		 Logger.getLoggingClient().exportLogger(selectedFile);
+		    	 } 
+  
+		    	 MainUIController.a.setAlertType(AlertType.CONFIRMATION);
+		    	 MainUIController.a.setTitle("ALERT");
+		    	 MainUIController.a.setHeaderText("Message");
+		    	 MainUIController.a.setContentText("Se ha exportado correctamente.");
+		    	 MainUIController.a.show();
                             
 		     }
 		});
@@ -211,17 +235,19 @@ public class MainUIController implements Initializable {
 		     @Override
 		     public void handle(MouseEvent event) {
 		    	 
-		    	 loaderService.reset();
-		    	 profilerService.reset();
 		    	 loaderService.setFile(null);
 		    	 profilerService.setFile(null);
 		    	 profilerService.setMainClass(null);
 		    	 Logger.getLoggingClient().cleanLogger();
-		    	 txtOutput = new TreeView<String>();
+		    	 /*txtOutput = new TreeView<String>();
 		    	 
 		    	 TreeItem<String> methodRoot = new TreeItem<>("Method call tree:");
 		         methodRoot.setExpanded(true);
-		         txtOutput.setRoot(methodRoot);          
+		         txtOutput.setRoot(methodRoot);*/     
+		         
+		         txtOutput.getRoot().getChildren().clear();
+		         txtOutput.refresh();
+		        
 		     }
 		});
 		
